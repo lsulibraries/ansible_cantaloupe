@@ -1,0 +1,40 @@
+---
+- name: Get cantaloupe source.
+  unarchive:
+    src: https://github.com/medusa-project/cantaloupe/releases/download/v{{ cantaloupe_version }}/Cantaloupe-{{ cantaloupe_version }}.zip
+    dest: /opt/
+    remote_src: yes
+
+- name: Create the cantaloupe user account.
+  user:
+    name: cantaloupe
+    home: /srv/home
+    shell: /bin/false
+
+- name: Make version agnostic symlink.
+  file:
+    src: "/opt/Cantaloupe-{{ cantaloupe_version }}"
+    path: /opt/cantaloupe
+    state: link
+    owner: cantaloupe
+    group: cantaloupe
+    force: yes
+
+- name: Make dirs for cantaloupe.  # per http://dev.digibess.it/doku.php?id=reloaded:is_cantsa
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: cantaloupe
+    group: cantaloupe
+    recurse: yes
+  with_items:
+    - "/opt/Cantaloupe-{{ cantaloupe_version }}"
+    - /srv/cache
+    - /srv/home
+    - /srv/log
+    - /srv/tmp
+
+- name: Ensure cantaloupe settings.
+  template:
+    src: cantaloupe.properties.j2
+    dest: /opt/cantaloupe/cantaloupe.properties

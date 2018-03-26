@@ -1,0 +1,13 @@
+---
+- name: Install script to purge cache.
+  template:
+    src: purge.sh.j2
+    dest: /root/purge.sh
+    mode: 0755
+
+- name: Configure cron to purge.
+  cron:
+    hour: 0
+    minute: 1
+    job: /root/purge.sh
+    name: cantaloupe

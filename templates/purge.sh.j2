@@ -1,0 +1,3 @@
+#! /bin/bash
+cd /opt/cantaloupe
+sudo -u cantaloupe java -Dcantaloupe.config=/opt/cantaloupe/cantaloupe.properties -Dcantaloupe.cache.purge -jar Cantaloupe-{{ cantaloupe_version }}.war

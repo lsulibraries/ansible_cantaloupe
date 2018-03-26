@@ -1,0 +1,24 @@
+---
+- name: get OpenJPEG source.
+  unarchive:
+    src: "https://github.com/uclouvain/openjpeg/releases/download/v{{ openjpeg_version }}/openjpeg-v{{ openjpeg_version }}-osx-x86_64.zip"
+    dest: /opt/
+    remote_src: yes
+
+- name: Make version agnostic symlink.
+  file:
+    src: "/opt/openjpeg-v{{ openjpeg_version }}-osx-x86_64"
+    path: /opt/openjpeg
+    state: link
+    force: yes
+
+- name: Link binaries into PATH.
+  file:
+    src: "/opt/openjpeg/bin/{{ item }}"
+    path: "/usr/local/bin/{{ item }}"
+    state: link
+    force: yes
+  with_items:
+    - opj_compress
+    - opj_decompress
+    - opj_dump

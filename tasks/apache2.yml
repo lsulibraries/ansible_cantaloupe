@@ -1,0 +1,28 @@
+---
+- name: Ensure apache2 installed.
+  apt:
+    cache_valid_time: 86400
+    name: apache2
+
+- name: Enable apache modules
+  command: "a2enmod {{ item }}"
+  with_items:
+    - headers
+    - proxy
+    - proxy_http
+
+- name: Configure cantaloupe proxy vhost
+  template:
+    src: cantaloupe-proxy.conf.j2
+    dest: /etc/apache2/sites-available/cantaloupe-proxy.conf
+
+- name: dis/enable vhosts
+  command: "{{ item }}"
+  with_items:
+    - a2dissite 000-default
+    - a2ensite cantaloupe-proxy
+
+- name: Restart apache2 to pick up new vhost.
+  service:
+    name: apache2
+    state: restarted

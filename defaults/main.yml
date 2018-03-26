@@ -1,3 +1,8 @@
 ---
 cantaloupe_version: 3.4.1 # cantaloupe uses a 'v' in the version number, don't include it here.
-cantaloupe_http_port: 80
+cantaloupe_http_port: 8182
+cantaloupe_proxy_host: localhost
+cantaloupe_host: localhost
+cantaloupe_Xmx: 1g
+
+openjpeg_version: 2.3.0

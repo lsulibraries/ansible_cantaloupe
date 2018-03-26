@@ -1,0 +1,18 @@
+# Provided by https://medusa-project.github.io/cantaloupe/manual/3.4/deployment.html#Reverse-ProxyingApache
+<VirtualHost *:80>
+  # X-Forwarded-Host will be set automatically by the web server.
+  RequestHeader set X-Forwarded-Proto HTTP
+  RequestHeader set X-Forwarded-Port 80
+  RequestHeader set X-Forwarded-Path /
+
+  ServerName {{ cantaloupe_proxy_host }}
+  AllowEncodedSlashes NoDecode
+  ProxyPassReverseCookiePath / /
+  ErrorLog /var/log/apache2/cantaloupe-error.log
+  CustomLog /var/log/apache2/cantaloupe-access.log combined
+
+  ProxyPass / http://{{ cantaloupe_host }}:8182/ nocanon
+  ProxyPassReverse / http://{{ cantaloupe_host }}:8182/
+  ProxyPassReverseCookieDomain {{ cantaloupe_host }}:8182 /
+  ProxyPreserveHost on
+</VirtualHost>
