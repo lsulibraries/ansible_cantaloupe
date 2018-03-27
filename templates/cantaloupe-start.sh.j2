@@ -1,0 +1,6 @@
+#!/bin/bash
+
+/usr/local/bin/slack.sh
+
+sudo killall java
+sudo -u cantaloupe nohup java -Dcantaloupe.config=/opt/cantaloupe/cantaloupe.properties -Xmx{{ cantaloupe_Xmx }} -jar /opt/cantaloupe/Cantaloupe-{{ cantaloupe_version }}.war &

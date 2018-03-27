@@ -1,8 +1,9 @@
 ---
-cantaloupe_version: 3.4.1 # cantaloupe uses a 'v' in the version number, don't include it here.
+cantaloupe_host: localhost
 cantaloupe_http_port: 8182
 cantaloupe_proxy_host: localhost
-cantaloupe_host: localhost
+cantaloupe_version: 3.4.1 # cantaloupe uses a 'v' in the version number, don't include it here.
 cantaloupe_Xmx: 1g
-
-openjpeg_version: 2.3.0
+openjpeg_version: v2.3.0
+monit_slack_url: https://localhost/slack
+monit_install: yes

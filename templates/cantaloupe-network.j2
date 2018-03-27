@@ -1,0 +1,4 @@
+check host cantaloupe with address 127.0.0.1
+      if failed port {{ cantaloupe_http_port }}
+        then exec "/etc/monit/cantaloupe-start.sh"
+      else if succeeded then exec "/usr/local/bin/slack.sh"

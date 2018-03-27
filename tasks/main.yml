@@ -1,9 +1,17 @@
 - name: Install dependencies
   apt:
     cache_valid_time: 86400
-    name: zip
+    name: "{{ item }}"
+  with_items:
+    - zip
+    - emacs
+    - htop
+    - tree
+    - monit
 
 - include: openjpeg.yml
 - include: cantaloupe.yml
 - include: cron.yml
 - include: apache2.yml
+- include: monit.yml
+  when: monit_install

@@ -1,24 +1,40 @@
 ---
-- name: get OpenJPEG source.
-  unarchive:
-    src: "https://github.com/uclouvain/openjpeg/releases/download/v{{ openjpeg_version }}/openjpeg-v{{ openjpeg_version }}-osx-x86_64.zip"
-    dest: /opt/
-    remote_src: yes
-
-- name: Make version agnostic symlink.
-  file:
-    src: "/opt/openjpeg-v{{ openjpeg_version }}-osx-x86_64"
-    path: /opt/openjpeg
-    state: link
-    force: yes
-
-- name: Link binaries into PATH.
-  file:
-    src: "/opt/openjpeg/bin/{{ item }}"
-    path: "/usr/local/bin/{{ item }}"
-    state: link
-    force: yes
+- name: Get compilation tools.
+  apt:
+    name: "{{ item }}"
   with_items:
-    - opj_compress
-    - opj_decompress
-    - opj_dump
+    - cmake
+    - g++
+
+- name: Remove any pre-existing version or link.
+  file:
+    path: /opt/openjpeg
+    state: absent
+
+- name: get OpenJPEG source.
+  git:
+    repo: https://github.com/uclouvain/openjpeg/
+    dest: /opt/openjpeg
+    version: "{{ openjpeg_version }}"
+    force: yes
+
+- name: Create build dir
+  file:
+    state: directory
+    path: /opt/openjpeg/build
+
+- name: Test for binaries.
+  stat:
+    path: /usr/local/bin/opj_compress
+  register: opj_binaries
+
+- name: Build.
+  command: "{{ item }}"
+  args:
+    chdir: /opt/openjpeg/build
+  with_items:
+    - cmake .. -DCMAKE_BUILD_TYPE=Release
+    - make
+    - make install
+    - make clean
+  when: not opj_binaries.stat.exists

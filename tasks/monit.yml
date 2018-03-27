@@ -1,0 +1,40 @@
+---
+- name: Install monit.
+  apt:
+    name: monit
+
+- name: Install monit jobs
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/monit/conf-enabled/{{ item }}"
+  with_items:
+    - rootfs
+    - cantaloupe-network
+
+- name: Install slack script
+  template:
+    src: slack.sh.j2
+    dest: /usr/local/bin/slack.sh
+    mode: 0755
+
+- name: Install slack-url
+  template:
+    src: slack-url.j2
+    dest: /etc/monit/slack-url
+
+- name: Install restart script
+  template:
+    src: cantaloupe-start.sh.j2
+    dest: /etc/monit/cantaloupe-start.sh
+    mode: 0755
+
+- name: Update monit polling interval.
+  lineinfile:
+    line: set daemon 15
+    regexp: '^\s+set daemon 120'
+    path: /etc/monit/monitrc
+
+- name: Reload monit.
+  service:
+    name: monit
+    state: restarted
