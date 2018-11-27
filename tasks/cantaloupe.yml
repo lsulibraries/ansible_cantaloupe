@@ -1,4 +1,7 @@
 ---
+- apt:
+    name: openjpeg-tools
+
 - name: Get cantaloupe source.
   unarchive:
     src: https://github.com/medusa-project/cantaloupe/releases/download/v{{ cantaloupe_version }}/Cantaloupe-{{ cantaloupe_version }}.zip
