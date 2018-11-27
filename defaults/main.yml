@@ -6,4 +6,4 @@ cantaloupe_version: 3.4.1 # cantaloupe uses a 'v' in the version number, don't i
 cantaloupe_Xmx: 1g
 openjpeg_version: v2.3.0
 monit_slack_url: https://localhost/slack
-monit_install: yes
+monit_install: no
