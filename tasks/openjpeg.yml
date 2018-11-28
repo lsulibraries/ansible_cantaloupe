@@ -38,3 +38,6 @@
     - make install
     - make clean
   when: not opj_binaries.stat.exists
+
+- name: ldconfig
+  command: ldconfig
