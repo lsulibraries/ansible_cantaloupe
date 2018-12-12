@@ -8,6 +8,7 @@
     - htop
     - tree
     - monit
+    - default-jre
 
 - include: openjpeg.yml
 - include: cantaloupe.yml
