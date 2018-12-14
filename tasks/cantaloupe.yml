@@ -16,12 +16,19 @@
 
 - name: Make version agnostic symlink.
   file:
-    src: "/opt/Cantaloupe-{{ cantaloupe_version }}"
+    src: "/opt/cantaloupe-{{ cantaloupe_version }}"
     path: /opt/cantaloupe
     state: link
     owner: cantaloupe
     group: cantaloupe
     force: yes
+
+- name: agnostic link war
+  file:
+    src: "/opt/cantaloupe/cantaloupe-{{ cantaloupe_version }}.war"
+    path: /opt/cantaloupe/cantaloupe.war
+    state: link
+
 
 - name: Make dirs for cantaloupe.  # per http://dev.digibess.it/doku.php?id=reloaded:is_cantsa
   file:
@@ -31,13 +38,28 @@
     group: cantaloupe
     recurse: yes
   with_items:
-    - "/opt/Cantaloupe-{{ cantaloupe_version }}"
+    # - "/opt/Cantaloupe-{{ cantaloupe_version }}"
     - /srv/cache
     - /srv/home
     - /srv/log
     - /srv/tmp
 
 - name: Ensure cantaloupe settings.
-  template:
-    src: cantaloupe.properties.j2
+  copy:
+    src: files/cantaloupe.properties
     dest: /opt/cantaloupe/cantaloupe.properties
+
+- name: move kdu libs into place
+  shell: cp /opt/cantaloupe/deps/Linux-x86-64/lib/libkdu_* /usr/lib/
+
+- name: move systemd service def into place
+  template:
+    src: templates/cantaloupe.service.j2
+    dest: /etc/systemd/system/cantaloupe.service
+
+- name: enable service
+  systemd:
+    name: cantaloupe
+    state: restarted
+    daemon_reload: yes
+    enabled: yes

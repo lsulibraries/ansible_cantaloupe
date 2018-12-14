@@ -2,8 +2,8 @@
 cantaloupe_host: localhost
 cantaloupe_http_port: 8182
 cantaloupe_proxy_host: localhost
-cantaloupe_version: 3.4.1 # cantaloupe uses a 'v' in the version number, don't include it here.
-cantaloupe_Xmx: 1g
+cantaloupe_version: 4.0.2 # cantaloupe uses a 'v' in the version number, don't include it here.
+cantaloupe_Xmx: "{{ (ansible_memtotal_mb*0.75)|int|abs }}m"
 openjpeg_version: v2.3.0
 monit_slack_url: https://localhost/slack
 monit_install: no

@@ -1,0 +1,12 @@
+[Unit]
+Description=Cantaloupe Image Server
+
+[Service]
+Type=simple
+User=cantaloupe
+ExecStart=/usr/bin/java -Dcantaloupe.config=/opt/cantaloupe/cantaloupe.properties -Xmx{{ cantaloupe_Xmx }} -jar /opt/cantaloupe/cantaloupe.war
+ExecStop=/usr/bin/killall -9 cantaloupe.war
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -8,11 +8,10 @@
     - htop
     - tree
     - monit
-    - default-jre
+    - default-jdk
 
 - include: openjpeg.yml
 - include: cantaloupe.yml
-- include: cron.yml
 - include: apache2.yml
 - include: monit.yml
   when: monit_install
